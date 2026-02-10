@@ -16,7 +16,7 @@ public class Config {
         // greet?");
         is_TT_Boom = configuration.getBoolean(
             "OTHTechnology : Control TT Machine Explosion | 控制TT模版机器爆炸",
-            "123Technology Settings",
+            "Machine Settings",
             is_TT_Boom,
             "Enable/disable TT template machine explosions | 憋憋");
         NEIFrontend = configuration.getBoolean(

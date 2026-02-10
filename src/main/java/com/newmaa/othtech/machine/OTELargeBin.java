@@ -581,14 +581,16 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
         if (mode == 0) {
             mEUt = 0;
             mMaxProgresstime = getBaseProgressingTick();
-            if (getStoredInputsNoSeparation() != null) {
-                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
+            Collection<ItemStack> storedInputs = getStoredInputsNoSeparation();
+            if (storedInputs != null) {
+                ItemStack[] itemStack = storedInputs.toArray(new ItemStack[0]);
                 for (ItemStack item : itemStack) {
                     item.stackSize -= item.stackSize;
                 }
             }
-            if (getStoredFluids() != null) {
-                FluidStack[] fluidStack = getStoredFluids().toArray(new FluidStack[0]);
+            Collection<FluidStack> storedFluids = getStoredFluids();
+            if (storedFluids != null) {
+                FluidStack[] fluidStack = storedFluids.toArray(new FluidStack[0]);
                 for (FluidStack fluid : fluidStack) {
                     fluid.amount -= fluid.amount;
                 }
@@ -597,8 +599,9 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
         } else if (mode == 1) {
             mMaxProgresstime = getBaseProgressingTick();
             int a;
-            if (getStoredInputsNoSeparation() != null) {
-                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
+            Collection<ItemStack> storedInputs = getStoredInputsNoSeparation();
+            if (storedInputs != null) {
+                ItemStack[] itemStack = storedInputs.toArray(new ItemStack[0]);
                 for (ItemStack item : itemStack) {
                     if (item.stackSize <= getMaxParallelRecipes()) {
                         a = item.stackSize;
@@ -617,8 +620,9 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
             }
         } else if (mode == 2) {
             mMaxProgresstime = getBaseProgressingTick();
-            if (getStoredInputsNoSeparation() != null) {
-                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
+            Collection<ItemStack> storedInputs = getStoredInputsNoSeparation();
+            if (storedInputs != null) {
+                ItemStack[] itemStack = storedInputs.toArray(new ItemStack[0]);
                 for (ItemStack item : itemStack) {
                     if (item.stackSize >= 256000) {
                         mSA += 256000;
