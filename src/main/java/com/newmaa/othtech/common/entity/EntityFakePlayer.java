@@ -31,9 +31,7 @@ public class EntityFakePlayer extends EntityCreature implements IMobInfoProvider
 
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
-        {
-            this.dropItem(ItemLoader.itemBrain, 1);
-        }
+        this.dropItem(ItemLoader.itemBrain, 1);
         int extraDrops = this.rand.nextInt(8 + lootingModifier);
         for (int i = 0; i < extraDrops; ++i) {
             this.dropItem(ModItems.itemMetaFood, 36);

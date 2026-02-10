@@ -29,11 +29,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemAdder extends ItemAdder_Basic {
 
     /**
-     * An Item Map for managing basic items
-     */
-    // public static Map<String, ItemAdder> Item01Map = new HashMap<>();
-
-    /**
      * A Set contains the meta value that has been used.
      * Thread-safe to prevent race conditions during concurrent access.
      */
@@ -73,15 +68,6 @@ public class ItemAdder extends ItemAdder_Basic {
         return initItem(aName, aMeta);
 
     }
-
-    /**
-     * Init the basic items at the game pre init.
-     */
-    // public static void init() {
-    // for (String MetaName : Item01Map.keySet()) {
-    // GameRegistry.registerItem(Item01Map.get(MetaName), MetaName);
-    // }
-    // }
 
     // region Overrides
 

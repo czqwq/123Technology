@@ -68,12 +68,16 @@ public class OTEMegaQFT extends OTHMultiMachineBase<OTEMegaQFT> {
     private byte mode = 0;
     private int multiplier = 1;
     private String plier = "0";
+    
+    // NBT version for backward compatibility
+    private static final int NBT_VERSION = 1;
 
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
+        aNBT.setInteger("nbtVersion", NBT_VERSION);
         aNBT.setInteger("stabilisationFieldMetadata", stabilisationFieldMetadata);
         aNBT.setInteger("spacetimeCompressionFieldMetadata", spacetimeCompressionFieldMetadata);
         aNBT.setInteger("timeAccelerationFieldMetadata", timeAccelerationFieldMetadata);
@@ -86,11 +90,15 @@ public class OTEMegaQFT extends OTHMultiMachineBase<OTEMegaQFT> {
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        stabilisationFieldMetadata = aNBT.getInteger("stabilisationFieldMetadata");
-        spacetimeCompressionFieldMetadata = aNBT.getInteger("spacetimeCompressionFieldMetadata");
-        timeAccelerationFieldMetadata = aNBT.getInteger("timeAccelerationFieldMetadata");
+        // Check NBT version for compatibility
+        int nbtVersion = aNBT.hasKey("nbtVersion") ? aNBT.getInteger("nbtVersion") : 0;
+        
+        // Sanitize and validate input values with bounds checking
+        stabilisationFieldMetadata = Math.max(0, aNBT.getInteger("stabilisationFieldMetadata"));
+        spacetimeCompressionFieldMetadata = Math.max(0, aNBT.getInteger("spacetimeCompressionFieldMetadata"));
+        timeAccelerationFieldMetadata = Math.max(0, Math.min(10, aNBT.getInteger("timeAccelerationFieldMetadata")));
         mode = aNBT.getByte("mode");
-        multiplier = aNBT.getInteger("multiplier");
+        multiplier = Math.max(1, aNBT.getInteger("multiplier"));
 
     }
 

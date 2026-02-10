@@ -88,11 +88,19 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
         if (Tier >= 5) {
             Tier = 0;
         }
-        return Tier == 1 ? checkPiece(Tier1, 2, 3, 1)
-            : Tier == 2 ? checkPiece(Tier2, 4, 9, 2)
-                : Tier == 3 ? checkPiece(Tier3, 7, 18, 3)
-                    : Tier == 4 ? checkPiece(Tier4, 9, 27, 1) : checkPiece(Tier1, 2, 3, 1);
-
+        
+        switch (Tier) {
+            case 1:
+                return checkPiece(Tier1, 2, 3, 1);
+            case 2:
+                return checkPiece(Tier2, 4, 9, 2);
+            case 3:
+                return checkPiece(Tier3, 7, 18, 3);
+            case 4:
+                return checkPiece(Tier4, 9, 27, 1);
+            default:
+                return checkPiece(Tier1, 2, 3, 1);
+        }
     }
 
     @Override
@@ -116,12 +124,19 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         Tier = stackSize.stackSize;
-        return Tier == 1 ? survivalBuildPiece(Tier1, stackSize, 2, 3, 1, elementBudget, source, actor, false, true)
-            : Tier == 2 ? survivalBuildPiece(Tier2, stackSize, 4, 9, 2, elementBudget, source, actor, false, true)
-                : Tier == 3 ? survivalBuildPiece(Tier3, stackSize, 7, 18, 3, elementBudget, source, actor, false, true)
-                    : Tier == 4
-                        ? survivalBuildPiece(Tier4, stackSize, 9, 27, 1, elementBudget, source, actor, false, true)
-                        : survivalBuildPiece(Tier1, stackSize, 2, 3, 1, elementBudget, source, actor, false, true);
+        
+        switch (Tier) {
+            case 1:
+                return survivalBuildPiece(Tier1, stackSize, 2, 3, 1, elementBudget, source, actor, false, true);
+            case 2:
+                return survivalBuildPiece(Tier2, stackSize, 4, 9, 2, elementBudget, source, actor, false, true);
+            case 3:
+                return survivalBuildPiece(Tier3, stackSize, 7, 18, 3, elementBudget, source, actor, false, true);
+            case 4:
+                return survivalBuildPiece(Tier4, stackSize, 9, 27, 1, elementBudget, source, actor, false, true);
+            default:
+                return survivalBuildPiece(Tier1, stackSize, 2, 3, 1, elementBudget, source, actor, false, true);
+        }
     }
 
     @Override
