@@ -10,6 +10,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +57,8 @@ public class OTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     private float overClock = 1, overVolt = 1;
-    private static final Map<String, RackComponent> componentBinds = new HashMap<>();
+    // Thread-safe map to prevent race conditions during concurrent access
+    private static final Map<String, RackComponent> componentBinds = new ConcurrentHashMap<>();
 
     private String clientLocale = "en_US";
 

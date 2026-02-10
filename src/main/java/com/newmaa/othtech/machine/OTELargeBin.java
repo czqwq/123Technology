@@ -566,14 +566,14 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
         if (mode == 0) {
             mEUt = 0;
             mMaxProgresstime = getBaseProgressingTick();
-            ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
-            FluidStack[] fluidStack = getStoredFluids().toArray(new FluidStack[0]);
             if (getStoredInputsNoSeparation() != null) {
+                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
                 for (ItemStack item : itemStack) {
                     item.stackSize -= item.stackSize;
                 }
             }
             if (getStoredFluids() != null) {
+                FluidStack[] fluidStack = getStoredFluids().toArray(new FluidStack[0]);
                 for (FluidStack fluid : fluidStack) {
                     fluid.amount -= fluid.amount;
                 }
@@ -582,32 +582,35 @@ public class OTELargeBin extends OTHMultiMachineBase<OTELargeBin> implements ICo
         } else if (mode == 1) {
             mMaxProgresstime = getBaseProgressingTick();
             int a;
-            ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
-            for (ItemStack item : itemStack) {
-                if (item.stackSize <= getMaxParallelRecipes()) {
-                    a = item.stackSize;
-                    mEUt = (30 * a);
-                    item.stackSize -= item.stackSize;
-                    mOutputItems = new ItemStack[] {
-                        setStackSize(ItemList.IC2_Scrap.get(1), (int) Math.floor(a * 0.5)) };
-                } else {
-                    a = getMaxParallelRecipes();
-                    mEUt = (30 * a);
-                    item.stackSize -= getMaxParallelRecipes();
-                    mOutputItems = new ItemStack[] {
-                        setStackSize(ItemList.IC2_Scrap.get(1), (int) Math.floor(a * 0.5)) };
+            if (getStoredInputsNoSeparation() != null) {
+                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
+                for (ItemStack item : itemStack) {
+                    if (item.stackSize <= getMaxParallelRecipes()) {
+                        a = item.stackSize;
+                        mEUt = (30 * a);
+                        item.stackSize -= item.stackSize;
+                        mOutputItems = new ItemStack[] {
+                            setStackSize(ItemList.IC2_Scrap.get(1), (int) Math.floor(a * 0.5)) };
+                    } else {
+                        a = getMaxParallelRecipes();
+                        mEUt = (30 * a);
+                        item.stackSize -= getMaxParallelRecipes();
+                        mOutputItems = new ItemStack[] {
+                            setStackSize(ItemList.IC2_Scrap.get(1), (int) Math.floor(a * 0.5)) };
+                    }
                 }
             }
         } else if (mode == 2) {
             mMaxProgresstime = getBaseProgressingTick();
-            ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
-            for (ItemStack item : itemStack) {
-                if (item.stackSize >= 256000) {
-                    mSA += 256000;
-                    item.stackSize -= 256000;
-                    if (mSA >= 256000) {
-                        mOutputItems = new ItemStack[] {
-                            GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47) };
+            if (getStoredInputsNoSeparation() != null) {
+                ItemStack[] itemStack = getStoredInputsNoSeparation().toArray(new ItemStack[0]);
+                for (ItemStack item : itemStack) {
+                    if (item.stackSize >= 256000) {
+                        mSA += 256000;
+                        item.stackSize -= 256000;
+                        if (mSA >= 256000) {
+                            mOutputItems = new ItemStack[] {
+                                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47) };
                         mSA -= 256000;
                     }
                 } else {
