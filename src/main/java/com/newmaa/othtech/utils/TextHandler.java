@@ -13,12 +13,15 @@ public class TextHandler {
     public static Map<String, String> LangMapNeedToWrite = new HashMap<>();
 
     public static String texter(String aTextLine, String aKey) {
+        if (aTextLine == null || aKey == null) {
+            return "texterError: null input";
+        }
 
         /**
          * If not in Dev mode , return vanilla forge method directly.
          */
         if (OTHTechnology.isInDevMode) {
-            if (LangMap.get(aKey) == null) {
+            if (LangMap == null || LangMap.get(aKey) == null) {
                 OTHTechnology.LOG.info("Texter get a new key - TextLine: " + aKey + " - " + aTextLine);
                 LangMapNeedToWrite.put(aKey, aTextLine);
                 return aTextLine;
@@ -32,8 +35,11 @@ public class TextHandler {
     }
 
     public static String texterButKey(String aTextLine, String aKey) {
+        if (aTextLine == null || aKey == null) {
+            return "texterError: null input";
+        }
         if (OTHTechnology.isInDevMode) {
-            if (LangMap.get(aKey) == null) {
+            if (LangMap == null || LangMap.get(aKey) == null) {
                 OTHTechnology.LOG.info("Texter get a new key - TextLine: " + aKey + " - " + aTextLine);
                 LangMapNeedToWrite.put(aKey, aTextLine);
             }
@@ -46,9 +52,12 @@ public class TextHandler {
      * {@link TextHandler#texter(String aTextLine, String aKey)}
      *
      * @param aTextLine The default String to where you use.
-     * @return
+     * @return The localized text or error message
      */
     public static String texter(String aTextLine) {
+        if (aTextLine == null) {
+            return "texterError: null input";
+        }
         String aKey = "Auto." + aTextLine + ".text";
         return texter(aTextLine, aKey);
     }

@@ -68,7 +68,14 @@ public class RecipeBuilder {
     }
 
     public RecipeBuilder eut(long eut) {
-        this.eut = (int) eut;
+        // Safe conversion with overflow check - clamp to int range
+        if (eut > Integer.MAX_VALUE) {
+            this.eut = Integer.MAX_VALUE;
+        } else if (eut < Integer.MIN_VALUE) {
+            this.eut = Integer.MIN_VALUE;
+        } else {
+            this.eut = (int) eut;
+        }
         return this;
     }
 

@@ -51,6 +51,12 @@ public final class Utils {
     }
 
     public static ItemStack addStringToStackName(ItemStack itemStack, String extra) {
+        if (itemStack == null) {
+            return null;
+        }
+        if (extra == null || extra.isEmpty()) {
+            return itemStack;
+        }
 
         String originName = itemStack.getDisplayName();
         String newName = originName + " " + extra;
