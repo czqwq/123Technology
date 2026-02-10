@@ -71,6 +71,8 @@ public class OTEMegaQFT extends OTHMultiMachineBase<OTEMegaQFT> {
     
     // NBT version for backward compatibility
     private static final int NBT_VERSION = 1;
+    // Maximum time acceleration level (10 = 100% speedup, based on getSpeedBonus formula)
+    private static final int MAX_TIME_ACCELERATION = 10;
 
 
     @Override
@@ -90,13 +92,16 @@ public class OTEMegaQFT extends OTHMultiMachineBase<OTEMegaQFT> {
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        // Check NBT version for compatibility
+        // Check NBT version for compatibility - future versions can add migration logic here
         int nbtVersion = aNBT.hasKey("nbtVersion") ? aNBT.getInteger("nbtVersion") : 0;
+        
+        // Version 0 (legacy): Load without validation
+        // Version 1: Load with bounds checking and sanitization
         
         // Sanitize and validate input values with bounds checking
         stabilisationFieldMetadata = Math.max(0, aNBT.getInteger("stabilisationFieldMetadata"));
         spacetimeCompressionFieldMetadata = Math.max(0, aNBT.getInteger("spacetimeCompressionFieldMetadata"));
-        timeAccelerationFieldMetadata = Math.max(0, Math.min(10, aNBT.getInteger("timeAccelerationFieldMetadata")));
+        timeAccelerationFieldMetadata = Math.max(0, Math.min(MAX_TIME_ACCELERATION, aNBT.getInteger("timeAccelerationFieldMetadata")));
         mode = aNBT.getByte("mode");
         multiplier = Math.max(1, aNBT.getInteger("multiplier"));
 
