@@ -2,7 +2,7 @@ package com.newmaa.othtech.common.beeyonds;
 
 import static gregtech.api.enums.Mods.*;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -50,8 +50,8 @@ public class OTHBeeyonds {
 
     public static IAlleleBeeEffect treetwisterEffect;
     public static IAlleleBeeEffect machineBoostEffect;
-    public static HashMap<Integer, OTHCombTypes> sCombMappings = new HashMap<>();
-    public static HashMap<String, Material> sMaterialMappings = new HashMap<>();
+    public static ConcurrentHashMap<Integer, OTHCombTypes> sCombMappings = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, Material> sMaterialMappings = new ConcurrentHashMap<>();
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;

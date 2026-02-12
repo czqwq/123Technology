@@ -7,6 +7,8 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -22,6 +24,7 @@ import forestry.core.genetics.mutations.Mutation;
 
 public class OTHBeeMutation extends BeeMutation {
 
+    private static final Logger LOG = LogManager.getLogger(OTHBeeMutation.class);
     private final float split;
 
     public OTHBeeMutation(IAlleleBeeSpecies bee0, IAlleleBeeSpecies bee1, IAllele[] result, int chance, float split) {
@@ -71,7 +74,7 @@ public class OTHBeeMutation extends BeeMutation {
         try {
             mutationConditions = f.get(this) instanceof List ? (List<IMutationCondition>) f.get(this) : null;
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            LOG.error("Failed to access mutationConditions field via reflection", e);
         }
 
         if (mutationConditions != null) for (IMutationCondition mutationCondition : mutationConditions) {

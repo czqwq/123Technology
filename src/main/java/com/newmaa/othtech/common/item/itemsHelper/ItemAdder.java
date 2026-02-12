@@ -1,11 +1,11 @@
 package com.newmaa.othtech.common.item.itemsHelper;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -34,8 +34,8 @@ public class ItemAdder extends ItemAdder_Basic {
     /**
      * A Set contains the meta value that has been used.
      */
-    public static final Set<Integer> MetaSet = new HashSet<>();
-    public static final Map<Integer, String[]> MetaItemTooltipsMap = new HashMap<>();
+    public static final Set<Integer> MetaSet = Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
+    public static final Map<Integer, String[]> MetaItemTooltipsMap = new ConcurrentHashMap<>();
 
     public final String unlocalizedName;
 

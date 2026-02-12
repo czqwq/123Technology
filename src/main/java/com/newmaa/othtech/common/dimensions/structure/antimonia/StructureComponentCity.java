@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 
 public abstract class StructureComponentCity extends StructureComponent {
@@ -17,7 +18,8 @@ public abstract class StructureComponentCity extends StructureComponent {
         try {
             MapGenCityAntimonia.initiateStructures();
         } catch (final Throwable e) {
-
+            FMLLog.severe("Failed to initialize city structures in StructureComponentCity", e);
+            throw new RuntimeException("Critical failure during structure initialization", e);
         }
     }
 

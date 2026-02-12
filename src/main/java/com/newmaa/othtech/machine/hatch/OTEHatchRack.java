@@ -8,8 +8,8 @@ import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +56,7 @@ public class OTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     private float overClock = 1, overVolt = 1;
-    private static final Map<String, RackComponent> componentBinds = new HashMap<>();
+    private static final Map<String, RackComponent> componentBinds = new ConcurrentHashMap<>();
 
     private String clientLocale = "en_US";
 
@@ -78,6 +78,7 @@ public class OTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("nbtVersion", 1); // Add version field for future compatibility
         aNBT.setFloat("eOverClock", overClock);
         aNBT.setFloat("eOverVolt", overVolt);
     }
@@ -85,8 +86,24 @@ public class OTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        overClock = aNBT.getFloat("eOverClock");
-        overVolt = aNBT.getFloat("eOverVolt");
+        // Add version checking and bounds validation
+        int version = aNBT.hasKey("nbtVersion") ? aNBT.getInteger("nbtVersion") : 0;
+        
+        if (aNBT.hasKey("eOverClock")) {
+            overClock = aNBT.getFloat("eOverClock");
+            // Add bounds checking to prevent invalid values
+            if (overClock < 0.0f || overClock > 100.0f) {
+                overClock = 1.0f;
+            }
+        }
+        
+        if (aNBT.hasKey("eOverVolt")) {
+            overVolt = aNBT.getFloat("eOverVolt");
+            // Add bounds checking to prevent invalid values
+            if (overVolt < 0.0f || overVolt > 100.0f) {
+                overVolt = 1.0f;
+            }
+        }
     }
 
     @Override

@@ -22,10 +22,10 @@ package com.newmaa.othtech.machine.machineclass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
@@ -58,7 +58,7 @@ public class OTHMobHandlerLoader {
         MinecraftForge.EVENT_BUS.register(instance);
     }
 
-    public static Map<String, MobEECRecipe> recipeMap = new HashMap<>();
+    public static Map<String, MobEECRecipe> recipeMap = new ConcurrentHashMap<>();
 
     public static class MobEECRecipe {
 

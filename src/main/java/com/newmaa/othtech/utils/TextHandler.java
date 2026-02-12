@@ -2,15 +2,15 @@ package com.newmaa.othtech.utils;
 
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.newmaa.othtech.OTHTechnology;
 
 public class TextHandler {
 
     public static Map<String, String> LangMap;
-    public static Map<String, String> LangMapNeedToWrite = new HashMap<>();
+    public static Map<String, String> LangMapNeedToWrite = new ConcurrentHashMap<>();
 
     public static String texter(String aTextLine, String aKey) {
 

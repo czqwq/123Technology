@@ -25,7 +25,8 @@ public class MapGenBuildingRoss123b extends MapGenStructure {
         try {
             MapGenBuildingRoss123b.initiateStructures();
         } catch (final Throwable e) {
-
+            FMLLog.severe("Failed to initialize Ross123b building structures", e);
+            throw new RuntimeException("Critical failure during structure initialization", e);
         }
     }
 

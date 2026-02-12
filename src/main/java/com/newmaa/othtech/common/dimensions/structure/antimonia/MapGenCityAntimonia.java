@@ -23,7 +23,8 @@ public class MapGenCityAntimonia extends MapGenStructure {
         try {
             MapGenCityAntimonia.initiateStructures();
         } catch (final Throwable e) {
-
+            FMLLog.severe("Failed to initialize Antimonia city structures", e);
+            throw new RuntimeException("Critical failure during structure initialization", e);
         }
     }
 

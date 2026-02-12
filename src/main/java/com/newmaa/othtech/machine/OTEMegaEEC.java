@@ -113,6 +113,12 @@ public class OTEMegaEEC extends OTHMultiMachineBase<OTEMegaEEC> {
         if (aStack.getItem() != poweredSpawnerItem) return SimpleCheckRecipeResult.ofFailure("EEC_nospawner");
 
         if (aStack.getTagCompound() == null) return SimpleCheckRecipeResult.ofFailure("EEC_invalidspawner");
+        
+        // Add hasKey() check before reading NBT tag
+        if (!aStack.getTagCompound().hasKey("mobType")) {
+            return SimpleCheckRecipeResult.ofFailure("EEC_invalidspawner");
+        }
+        
         String mobType = aStack.getTagCompound()
             .getString("mobType");
         if (mobType.isEmpty()) return SimpleCheckRecipeResult.ofFailure("EEC_invalidspawner");
