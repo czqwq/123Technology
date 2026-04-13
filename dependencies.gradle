@@ -28,6 +28,7 @@ dependencies {
     implementation(gtnhDev("EnderIO"))
     implementation(gtnhDev("Eternal-Singularity"))
     implementation(gtnhDev("ForestryMC"))
+    implementation(gtnhDev("BetterQuesting"))
     implementation(gtnhDev("MagicBees"))
     implementation(gtnhDev("NotEnoughItems"))
     implementation(gtnhDev("OpenComputers"))
