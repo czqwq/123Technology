@@ -15,7 +15,9 @@ import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -249,23 +251,28 @@ public class OTENQFuelGeneratorUniversal extends OTHTTMultiMachineBaseEM
             }
             if (isWirelessMode) {
                 this.setPowerFlow(0);
-                BigInteger costingWirelessEUTemp = BigInteger.valueOf(recipe.mSpecialValue)
-                    .multiply(
-                        BigInteger.valueOf((long) FuelsValueBonus)
-                            .multiply(BigInteger.valueOf(FuelAmount)))
-                    .multiply(BigInteger.valueOf(tEff))
-                    .divide(BigInteger.valueOf((100)))
-                    .multiply(BigInteger.valueOf(recipe.mDuration));
+                // Bug fix: use BigDecimal to preserve FuelsValueBonus fractional precision before
+                // converting to BigInteger; also multiply mDuration before dividing by 100 to
+                // avoid premature rounding loss.
+                BigInteger costingWirelessEUTemp = BigDecimal.valueOf(recipe.mSpecialValue)
+                    .multiply(BigDecimal.valueOf(FuelsValueBonus))
+                    .multiply(BigDecimal.valueOf(FuelAmount))
+                    .multiply(BigDecimal.valueOf(tEff))
+                    .multiply(BigDecimal.valueOf(recipe.mDuration))
+                    .divide(BigDecimal.valueOf(100), 0, RoundingMode.DOWN)
+                    .toBigInteger();
                 costingWirelessEU = GTUtility.formatNumbers(costingWirelessEUTemp);
                 if (!addEUToGlobalEnergyMap(ownerUUID, costingWirelessEUTemp)) {
                     return CheckRecipeResultRegistry.INTERNAL_ERROR;
                 }
             } else {
                 costingWirelessEU = "0";
+                // Bug fix: cast FuelAmount to double first to avoid long overflow when
+                // FuelAmount * recipe.mSpecialValue exceeds Long.MAX_VALUE for high-tier fuels.
                 this.setPowerFlow(
                     (long) Math.min(
                         Long.MAX_VALUE - 1,
-                        FuelAmount * recipe.mSpecialValue
+                        (double) FuelAmount * recipe.mSpecialValue
                             * FuelsValueBonus
                             * tEff
                             / 100
@@ -365,6 +372,16 @@ public class OTENQFuelGeneratorUniversal extends OTHTTMultiMachineBaseEM
         else return aFuel.mFluidInputs[0];
     }
 
+    /**
+     * Calculates the efficiency multiplier {@code tEff} used to scale power output.
+     *
+     * <p>
+     * <b>Intentional behaviour (no-promoter case):</b> when {@code aPromoter == 0} this method
+     * sets {@code tEff = 0}, which causes the power output for that cycle to be 0 EU/t (or 0 EU in
+     * wireless mode). The fuel is still consumed by the caller. This is by design — the promoter
+     * fluid is a hard prerequisite; without it the generator fires but intentionally produces no
+     * energy.
+     */
     public void calculateEfficiency(long aFuel, long aPromoter, double coefficient) {
         if (aPromoter == 0) {
             this.tEff = 0;
